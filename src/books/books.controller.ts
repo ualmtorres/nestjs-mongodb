@@ -13,6 +13,7 @@ import { Request } from 'express';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { ParseObjectIdPipe } from '../utilities/parse-object-id-pipe.pipe';
 
 @Controller('books')
 @ApiTags('book')
@@ -30,17 +31,20 @@ export class BooksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseObjectIdPipe) id: string) {
     return this.booksService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
+  update(
+    @Param('id', ParseObjectIdPipe) id: string,
+    @Body() updateBookDto: UpdateBookDto,
+  ) {
     return this.booksService.update(id, updateBookDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseObjectIdPipe) id: string) {
     return this.booksService.remove(id);
   }
 }
