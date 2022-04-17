@@ -14,6 +14,7 @@ import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { ParseObjectIdPipe } from '../utilities/parse-object-id-pipe.pipe';
+import { CreateCommentDto } from './dto/create-comment.dto';
 
 @Controller('books')
 @ApiTags('book')
@@ -46,5 +47,13 @@ export class BooksController {
   @Delete(':id')
   remove(@Param('id', ParseObjectIdPipe) id: string) {
     return this.booksService.remove(id);
+  }
+
+  @Post(':id/comment')
+  async addComment(
+    @Param('id', ParseObjectIdPipe) id: string,
+    @Body() comment: CreateCommentDto,
+  ) {
+    return this.booksService.addComment(id, comment);
   }
 }
